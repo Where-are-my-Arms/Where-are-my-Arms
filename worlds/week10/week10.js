@@ -870,6 +870,13 @@ function myDraw(t, projMat, viewMat, state, eyeIdx, isMiniature) {
         Here is where we draw avatars and controllers.
       -----------------------------------------------------------------*/
    
+   let userList = [];
+   for (let id in MR.avatars) {
+      if (MR.avatars[id].mode == MR.UserType.vr) {
+         userList.push(id);
+      }
+   }
+
    for (let id in MR.avatars) {
       
       const avatar = MR.avatars[id];
@@ -889,8 +896,15 @@ function myDraw(t, projMat, viewMat, state, eyeIdx, isMiniature) {
             console.log("not defined");
          }
          
+         /*
          const rcontroller = avatar.rightController;
          const lcontroller = avatar.leftController;
+         */
+
+         let index = userList.indexOf(id);
+         let swapIndex = userList[(index + 1) % userList.length]
+         const rcontroller = MR.avatars[swapIndex].rightController;;
+         const lcontroller = MR.avatars[swapIndex].leftController;
          
          let hpos = headsetPos.slice();
          hpos[1] += EYE_HEIGHT;
